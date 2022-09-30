@@ -4,6 +4,11 @@ public class DoubleDefinition extends ByteCodeDefinition{
 
   double data;
 
+  @Override
+  public String toString() {
+    return "STORE\t" + data + "\n";
+  }
+
   public double getData() {
     return data;
   }

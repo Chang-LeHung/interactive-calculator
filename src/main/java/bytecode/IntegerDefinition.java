@@ -15,4 +15,9 @@ public class IntegerDefinition extends ByteCodeDefinition{
   public void setData(int data) {
     this.data = data;
   }
+
+  @Override
+  public String toString() {
+    return "STORE\t" + data + "\n";
+  }
 }

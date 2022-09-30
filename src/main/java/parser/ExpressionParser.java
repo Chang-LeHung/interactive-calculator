@@ -21,6 +21,7 @@ class ExpressionParser implements ExpressionParserConstants {
       System.out.println(dfs.getEdges().toString());
 
       System.out.println(codeContainer);
+      System.out.println(codeContainer.size());
     }
 
   final public Node expression() throws ParseException {Token t = null;

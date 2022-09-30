@@ -46,19 +46,15 @@ public class ByteCodeGenerator extends DFS {
       }else {
         if (node.getNodeType() == Node.Type.MINUS) {
           MINUSDefinition minusDefinition = new MINUSDefinition();
-          minusDefinition.setOpType(ByteCodeDefinition.OPType.MINUS);
           codeContainer.add(minusDefinition);
         }else if (node.getNodeType() == Node.Type.PLUS) {
           PLUSDefinition plusDefinition = new PLUSDefinition();
-          plusDefinition.setOpType(ByteCodeDefinition.OPType.PLUS);
           codeContainer.add(plusDefinition);
         }else if (node.getNodeType() == Node.Type.TIMES) {
           TIMESDefinition timesDefinition = new TIMESDefinition();
-          timesDefinition.setOpType(ByteCodeDefinition.OPType.TIMES);
           codeContainer.add(timesDefinition);
         }else if (node.getNodeType() == Node.Type.DIV) {
           DIVDefinition divDefinition = new DIVDefinition();
-          divDefinition.setOpType(ByteCodeDefinition.OPType.DIV);
           codeContainer.add(divDefinition);
         }
       }
