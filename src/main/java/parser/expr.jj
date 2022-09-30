@@ -1,0 +1,200 @@
+
+
+
+options {
+    STATIC = false ;
+    IGNORE_CASE = true;
+//    LOOKAHEAD = 2;  // 全局设置
+}
+
+PARSER_BEGIN(ExpressionParser)
+    package parser;
+import java.io.PrintStream ;
+import java.util.ArrayList;
+import util.DFS;
+class ExpressionParser {
+    public static void main( String[] args )
+        throws NumberFormatException, ParseException {
+        ExpressionParser parser = new ExpressionParser( System.in ) ;
+        Node node = parser.expression();
+        DFS dfs = new DFS();
+        dfs.dumpAST(node);
+        System.out.println(dfs.getNodes().toString());
+        System.out.println(dfs.getEdges().toString());
+    }
+}
+PARSER_END(ExpressionParser)
+
+
+SKIP : { " " | "\n" | "\r" | "\r\n" | "\t"}
+TOKEN : { < SEMI : ";" > }
+TOKEN : { <COMMA : "," > }
+
+TOKEN : { < PLUS : "+" > }
+TOKEN : { < TIMES : "*" >}
+TOKEN : { < DIV : "/" > }
+TOKEN : { < MINUS : "-" > }
+TOKEN : { < AND : "&">}
+TOKEN : { < OR : "|">}
+TOKEN : { < NOT : "~" >}
+TOKEN : { < LPARN : "(" >}
+TOKEN : { < RPARN : ")" >}
+TOKEN : { < ASSIGN : "=">}
+
+
+
+TOKEN : { < NUMBER : <DIGITS>
+                   | <DIGITS> "." <DIGITS>
+                   | <DIGITS> "."
+                   | "." <DIGITS>
+                   >
+        }
+
+TOKEN : { < #DIGITS : (["0"-"9"])+ > }
+TOKEN : { < #CHARACTER : ["a"-"z", "A"-"Z"] >}
+TOKEN : { <STRING : ("\"" | "\'")(<CHARACTER>)+("\"" | "\'")>}
+TOKEN : { < IDENTIFIER :  (<CHARACTER> ((<CHARACTER> | <NUMBER> ))*) >}
+
+Node expression():
+{
+  Token t = null;
+  // 在写表达式的时候一定要注意 ｜ 的时候注意使用 () 包裹起来 否则会出现问题
+  Node node = null;
+  Node ret = null;
+}
+{
+    node = term()
+    (
+        (
+            t = <MINUS>
+            {
+              ret = new Node();
+              ret.setLeftChild(node);
+              ret.setNodeType(Node.Type.OPERATOR);
+              ret.setValue(t.image);
+            }
+            node = term()
+            {
+              ret.setRightChild(node);
+              node = ret;
+            }
+        )
+        |
+        (
+            t = <PLUS>
+            {
+              ret = new Node();
+              ret.setLeftChild(node);
+              ret.setNodeType(Node.Type.OPERATOR);
+              ret.setValue(t.image);
+            }
+            node = term()
+            {
+              ret.setRightChild(node);
+              node = ret;
+            }
+        )
+        |
+        (
+            t = <ASSIGN>
+            {
+                ret = new Node();
+                ret.setLeftChild(node);
+                ret.setNodeType(Node.Type.ASSIGN);
+                ret.setValue(t.image);
+            }
+            node = expression()
+            {
+              ret.setRightChild(node);
+              node = ret;
+            }
+        )
+    )*
+    {
+//      System.out.println("In expression : ret = " + node);
+      return node;
+    }
+}
+
+Node term():
+{
+  Token t;
+  Node ret = null;
+  Node node = null;
+}
+{
+
+    node = primary()
+    (
+        (
+            t = <TIMES>
+            {
+              ret = new Node();
+              ret.setLeftChild(node);
+              ret.setNodeType(Node.Type.OPERATOR);
+              ret.setValue(t.image);
+            }
+            node = primary()
+            {
+              ret.setRightChild(node);
+              node = ret;
+            }
+        )
+        |
+        (
+            t = <DIV>
+            {
+              ret = new Node();
+              ret.setLeftChild(node);
+              ret.setNodeType(Node.Type.OPERATOR);
+              ret.setValue(t.image);
+            }
+            node = primary()
+            {
+              ret.setRightChild(node);
+              node = ret;
+            }
+        )
+    )*
+    {
+//    System.out.println("In term : ret = " + node);
+    return node;
+    }
+}
+
+Node primary():
+{
+  Token t = null;
+  Node ret = null;
+}
+{
+    (
+       (
+          {ret = new Node();}
+          t = <NUMBER>
+          {
+            ret.setNodeType(Node.Type.NUMBER);
+            ret.setValue(t.image);
+          }
+       )
+       |
+       (
+           {ret = new Node();}
+           t = <IDENTIFIER>
+           {
+             ret.setNodeType(Node.Type.IDENTIFIER);
+             ret.setValue(t.image);
+           }
+       )
+       |
+       (
+            <LPARN>
+            ret = expression()
+            <RPARN>
+       )
+    )
+   {
+//    System.out.println("In primary : ret = " + ret);
+    return ret;
+   }
+}

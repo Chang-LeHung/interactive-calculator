@@ -1,0 +1,187 @@
+
+
+
+options {
+    STATIC = false ;
+    IGNORE_CASE = true;
+//    LOOKAHEAD = 2;  // 全局设置
+}
+
+PARSER_BEGIN(ExpressionParser)
+    package parser;
+import java.io.PrintStream ;
+import java.util.ArrayList;
+import util.DFS;
+class ExpressionParser {
+    public static void main( String[] args )
+        throws NumberFormatException, ParseException {
+        ExpressionParser parser = new ExpressionParser( System.in ) ;
+        Node node = new Node();
+        parser.expression(node);
+        DFS dfs = new DFS();
+        dfs.dumpAST(node);
+        System.out.println(dfs.getNodes().toString());
+        System.out.println(dfs.getEdges().toString());
+    }
+}
+PARSER_END(ExpressionParser)
+
+
+SKIP : { " " | "\n" | "\r" | "\r\n" | "\t"}
+TOKEN : { < SEMI : ";" > }
+TOKEN : { <COMMA : "," > }
+
+TOKEN : { < PLUS : "+" > }
+TOKEN : { < TIMES : "*" >}
+TOKEN : { < DIV : "/" > }
+TOKEN : { < MINUS : "-" > }
+TOKEN : { < AND : "&">}
+TOKEN : { < OR : "|">}
+TOKEN : { < NOT : "~" >}
+TOKEN : { < LPARN : "(" >}
+TOKEN : { < RPARN : ")" >}
+TOKEN : { < ASSIGN : "=">}
+
+
+
+TOKEN : { < NUMBER : <DIGITS>
+                   | <DIGITS> "." <DIGITS>
+                   | <DIGITS> "."
+                   | "." <DIGITS>
+                   >
+        }
+
+TOKEN : { < #DIGITS : (["0"-"9"])+ > }
+TOKEN : { < #CHARACTER : ["a"-"z", "A"-"Z"] >}
+TOKEN : { <STRING : ("\"" | "\'")(<CHARACTER>)+("\"" | "\'")>}
+TOKEN : { < IDENTIFIER :  (<CHARACTER> ((<CHARACTER> | <NUMBER> ))*) >}
+
+void expression(Node node):
+{
+  Token t = null;
+  // 在写表达式的时候一定要注意 ｜ 的时候注意使用 () 包裹起来 否则会出现问题
+}
+{
+    term(node)
+    (
+        t = <MINUS>
+        {
+           Node L = new Node();
+           L.setLeftChild(node.getLeftChild());
+           L.setRightChild(node.getRightChild());
+           L.setValue(node.getValue());
+           L.setNodeType(node.getNodeType());
+           node.setLeftChild(L);
+
+           node.setValue(t.image);
+           node.setNodeType(Node.Type.OPERATOR);
+           node.setRightChild(new Node());
+        }
+        expression(node.getRightChild())
+        |
+        (
+        t = <PLUS>
+        {
+           Node L = new Node();
+           L.setLeftChild(node.getLeftChild());
+           L.setRightChild(node.getRightChild());
+           L.setValue(node.getValue());
+           L.setNodeType(node.getNodeType());
+           node.setLeftChild(L);
+
+           node.setValue(t.image);
+           node.setNodeType(Node.Type.OPERATOR);
+           node.setRightChild(new Node());
+         }
+         expression(node.getRightChild())
+        )
+        |
+        (
+        t = <ASSIGN>
+        {
+           Node L = new Node();
+           L.setLeftChild(node.getLeftChild());
+           L.setRightChild(node.getRightChild());
+           L.setValue(node.getValue());
+           L.setNodeType(node.getNodeType());
+           node.setLeftChild(L);
+
+           node.setValue(t.image);
+           node.setNodeType(Node.Type.OPERATOR);
+           node.setRightChild(new Node());
+        }
+        expression(node.getRightChild())
+        )
+    )?
+}
+
+void term(Node node):
+{
+  Token t;
+}
+{
+
+    primary(node)
+    (
+        (
+            {
+              Node R = new Node();
+              Node L = new Node();
+              L.setValue(node.getValue());
+              L.setNodeType(node.getNodeType());
+              node.setLeftChild(L);
+              node.setRightChild(R);
+            }
+
+            t = <TIMES>
+            {
+              node.setValue(t.image);node.setNodeType(Node.Type.OPERATOR);
+            }
+            term(node.getRightChild())
+        )
+        |
+        (
+            {
+              Node R = new Node();
+              Node L = new Node();
+              L.setValue(node.getValue());
+              L.setNodeType(node.getNodeType());
+              node.setLeftChild(L);
+              node.setRightChild(R);
+            }
+            t = <DIV>
+            {
+              node.setValue(t.image);node.setNodeType(Node.Type.OPERATOR);
+            }
+            term(node.getRightChild())
+        )
+    )?
+}
+
+void primary(Node node):
+{
+  Token t = null;
+}
+{
+   (
+      t = <NUMBER>
+      {
+        node.setNodeType(Node.Type.NUMBER);
+        node.setValue(t.image);
+      }
+   )
+   |
+   (
+       t = <IDENTIFIER>
+       {
+         node.setNodeType(Node.Type.IDENTIFIER);
+         node.setValue(t.image);
+       }
+   )
+   |
+   (
+       <LPARN>
+       expression(node)
+       <RPARN>
+   )
+}
