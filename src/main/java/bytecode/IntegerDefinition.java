@@ -8,7 +8,7 @@ public class IntegerDefinition extends ByteCodeDefinition{
     setOpType(OPType.STORE);
   }
 
-  public int getData() {
+  public Integer getData() {
     return data;
   }
 

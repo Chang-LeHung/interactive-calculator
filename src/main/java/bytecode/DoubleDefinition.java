@@ -9,7 +9,7 @@ public class DoubleDefinition extends ByteCodeDefinition{
     return "Load\t" + data + "\n";
   }
 
-  public double getData() {
+  public Double getData() {
     return data;
   }
 
