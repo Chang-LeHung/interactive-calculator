@@ -17,13 +17,13 @@ class ExpressionParser implements ExpressionParserConstants {
         Node node = parser.expression();
         DFS dfs = new DFS();
         dfs.dumpAST(node);
-      ByteCodeGenerator byteCodeGenerator = new ByteCodeGenerator();
-      byteCodeGenerator.generateByteCode(node);
-      ArrayList<ByteCodeDefinition> codeContainer = byteCodeGenerator.getCodeContainer();
-      ByteCodeExecutor byteCodeExecutor = new ByteCodeExecutor();
-      byteCodeExecutor.setCodePool(codeContainer);
-      ICObject run = byteCodeExecutor.run();
-      System.out.println(run);
+        ByteCodeGenerator byteCodeGenerator = new ByteCodeGenerator();
+        byteCodeGenerator.generateByteCode(node);
+        ArrayList<ByteCodeDefinition> codeContainer = byteCodeGenerator.getCodeContainer();
+        ByteCodeExecutor byteCodeExecutor = new ByteCodeExecutor();
+        byteCodeExecutor.setCodePool(codeContainer);
+        ICObject run = byteCodeExecutor.run();
+        System.out.println(run);
     }
 
   final public Node expression() throws ParseException {Token t = null;
