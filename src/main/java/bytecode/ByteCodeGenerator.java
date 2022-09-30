@@ -27,7 +27,7 @@ public class ByteCodeGenerator extends DFS {
         VariableDefinition variableDefinition = new VariableDefinition();
         variableDefinition.setName(node.getValue());
         if (node.getParent().getNodeType() != Node.Type.ASSIGN) {
-          variableDefinition.setOpType(ByteCodeDefinition.OPType.LOAD);
+          variableDefinition.setOpType(OPType.LOAD);
           codeContainer.add(variableDefinition);
         }
       }else if (node.getNodeType() == Node.Type.NUMBER) {
@@ -56,7 +56,7 @@ public class ByteCodeGenerator extends DFS {
         }else if (node.getNodeType() == Node.Type.ASSIGN) {
           VariableDefinition variableDefinition = new VariableDefinition();
           variableDefinition.setName(node.getLeftChild().getValue());
-          variableDefinition.setOpType(ByteCodeDefinition.OPType.STORE);
+          variableDefinition.setOpType(OPType.STORE);
           codeContainer.add(variableDefinition);
         }
       }

@@ -3,15 +3,6 @@ package bytecode;
 
 public class ByteCodeDefinition {
 
-    enum OPType {
-      STORE,
-      LOAD,
-      TIMES,
-      DIV,
-      PLUS,
-      MINUS,
-    }
-
   private OPType opType;
 
   public OPType getOpType() {
