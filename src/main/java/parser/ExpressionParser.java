@@ -10,18 +10,16 @@ import util.DFS;
 class ExpressionParser implements ExpressionParserConstants {
     public static void main( String[] args )
         throws NumberFormatException, ParseException {
-      ExpressionParser parser = new ExpressionParser( System.in ) ;
-      Node node = parser.expression();
-      DFS dfs = new DFS();
-      dfs.dumpAST(node);
+        ExpressionParser parser = new ExpressionParser( System.in ) ;
+        Node node = parser.expression();
+        DFS dfs = new DFS();
+        dfs.dumpAST(node);
       ByteCodeGenerator byteCodeGenerator = new ByteCodeGenerator();
       byteCodeGenerator.generateByteCode(node);
       ArrayList<ByteCodeDefinition> codeContainer = byteCodeGenerator.getCodeContainer();
-      System.out.println(dfs.getNodes().toString());
-      System.out.println(dfs.getEdges().toString());
-
       System.out.println(codeContainer);
-      System.out.println(codeContainer.size());
+//      System.out.println(dfs.getNodes().toString());
+//      System.out.println(dfs.getEdges().toString());
     }
 
   final public Node expression() throws ParseException {Token t = null;
@@ -47,7 +45,7 @@ class ExpressionParser implements ExpressionParserConstants {
         t = jj_consume_token(MINUS);
 ret = new Node();
               ret.setLeftChild(node);
-              ret.setNodeType(Node.Type.OPERATOR);
+              ret.setNodeType(Node.Type.MINUS);
               node.setParent(ret);
               ret.setValue(t.image);
         node = term();
@@ -61,7 +59,7 @@ ret.setRightChild(node);
 ret = new Node();
               ret.setLeftChild(node);
               node.setParent(ret);
-              ret.setNodeType(Node.Type.OPERATOR);
+              ret.setNodeType(Node.Type.PLUS);
               ret.setValue(t.image);
         node = term();
 ret.setRightChild(node);
@@ -114,7 +112,7 @@ ret.setRightChild(node);
 ret = new Node();
               ret.setLeftChild(node);
               node.setParent(ret);
-              ret.setNodeType(Node.Type.OPERATOR);
+              ret.setNodeType(Node.Type.TIMES);
               ret.setValue(t.image);
         node = primary();
 ret.setRightChild(node);
@@ -127,7 +125,7 @@ ret.setRightChild(node);
 ret = new Node();
               ret.setLeftChild(node);
               node.setParent(ret);
-              ret.setNodeType(Node.Type.OPERATOR);
+              ret.setNodeType(Node.Type.DIV);
               ret.setValue(t.image);
         node = primary();
 ret.setRightChild(node);

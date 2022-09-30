@@ -6,7 +6,7 @@ public class DoubleDefinition extends ByteCodeDefinition{
 
   @Override
   public String toString() {
-    return "STORE\t" + data + "\n";
+    return "Load\t" + data + "\n";
   }
 
   public double getData() {

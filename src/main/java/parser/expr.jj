@@ -70,7 +70,7 @@ Node expression():
             {
               ret = new Node();
               ret.setLeftChild(node);
-              ret.setNodeType(Node.Type.OPERATOR);
+              ret.setNodeType(Node.Type.MINUS);
               node.setParent(ret);
               ret.setValue(t.image);
             }
@@ -88,7 +88,7 @@ Node expression():
               ret = new Node();
               ret.setLeftChild(node);
               node.setParent(ret);
-              ret.setNodeType(Node.Type.OPERATOR);
+              ret.setNodeType(Node.Type.PLUS);
               ret.setValue(t.image);
             }
             node = term()
@@ -137,7 +137,7 @@ Node term():
               ret = new Node();
               ret.setLeftChild(node);
               node.setParent(ret);
-              ret.setNodeType(Node.Type.OPERATOR);
+              ret.setNodeType(Node.Type.TIMES);
               ret.setValue(t.image);
             }
             node = primary()
@@ -154,7 +154,7 @@ Node term():
               ret = new Node();
               ret.setLeftChild(node);
               node.setParent(ret);
-              ret.setNodeType(Node.Type.OPERATOR);
+              ret.setNodeType(Node.Type.DIV);
               ret.setValue(t.image);
             }
             node = primary()

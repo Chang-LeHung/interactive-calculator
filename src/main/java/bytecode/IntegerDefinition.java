@@ -18,6 +18,6 @@ public class IntegerDefinition extends ByteCodeDefinition{
 
   @Override
   public String toString() {
-    return "STORE\t" + data + "\n";
+    return "Load\t" + data + "\n";
   }
 }

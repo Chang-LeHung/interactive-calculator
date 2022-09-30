@@ -23,16 +23,13 @@ public class ByteCodeGenerator extends DFS {
     if (node != null) {
       generateByteCode(node.getLeftChild());
       generateByteCode(node.getRightChild());
-
       if (node.getNodeType() == Node.Type.IDENTIFIER) {
         VariableDefinition variableDefinition = new VariableDefinition();
         variableDefinition.setName(node.getValue());
-        if (node.getParent().getNodeType() == Node.Type.ASSIGN) {
-          variableDefinition.setOpType(ByteCodeDefinition.OPType.STORE);
-        }else{
+        if (node.getParent().getNodeType() != Node.Type.ASSIGN) {
           variableDefinition.setOpType(ByteCodeDefinition.OPType.LOAD);
+          codeContainer.add(variableDefinition);
         }
-        codeContainer.add(variableDefinition);
       }else if (node.getNodeType() == Node.Type.NUMBER) {
         if (node.getValue().contains(".")) {
           DoubleDefinition doubleDefinition = new DoubleDefinition();
@@ -56,6 +53,11 @@ public class ByteCodeGenerator extends DFS {
         }else if (node.getNodeType() == Node.Type.DIV) {
           DIVDefinition divDefinition = new DIVDefinition();
           codeContainer.add(divDefinition);
+        }else if (node.getNodeType() == Node.Type.ASSIGN) {
+          VariableDefinition variableDefinition = new VariableDefinition();
+          variableDefinition.setName(node.getLeftChild().getValue());
+          variableDefinition.setOpType(ByteCodeDefinition.OPType.STORE);
+          codeContainer.add(variableDefinition);
         }
       }
     }
