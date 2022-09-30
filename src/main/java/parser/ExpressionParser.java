@@ -3,16 +3,24 @@
     package parser;
 import java.io.PrintStream ;
 import java.util.ArrayList;
+
+import bytecode.ByteCodeDefinition;
+import bytecode.ByteCodeGenerator;
 import util.DFS;
 class ExpressionParser implements ExpressionParserConstants {
     public static void main( String[] args )
         throws NumberFormatException, ParseException {
-        ExpressionParser parser = new ExpressionParser( System.in ) ;
-        Node node = parser.expression();
-        DFS dfs = new DFS();
-        dfs.dumpAST(node);
-        System.out.println(dfs.getNodes().toString());
-        System.out.println(dfs.getEdges().toString());
+      ExpressionParser parser = new ExpressionParser( System.in ) ;
+      Node node = parser.expression();
+      DFS dfs = new DFS();
+      dfs.dumpAST(node);
+      ByteCodeGenerator byteCodeGenerator = new ByteCodeGenerator();
+      byteCodeGenerator.generateByteCode(node);
+      ArrayList<ByteCodeDefinition> codeContainer = byteCodeGenerator.getCodeContainer();
+      System.out.println(dfs.getNodes().toString());
+      System.out.println(dfs.getEdges().toString());
+
+      System.out.println(codeContainer);
     }
 
   final public Node expression() throws ParseException {Token t = null;

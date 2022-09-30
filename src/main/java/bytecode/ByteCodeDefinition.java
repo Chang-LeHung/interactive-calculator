@@ -1,6 +1,5 @@
 package bytecode;
 
-import parser.Node;
 
 public class ByteCodeDefinition {
 
@@ -13,7 +12,7 @@ public class ByteCodeDefinition {
       MINUS,
     }
 
-    private OPType opType;
+  private OPType opType;
 
   public OPType getOpType() {
     return opType;
@@ -23,4 +22,8 @@ public class ByteCodeDefinition {
     this.opType = opType;
   }
 
+  @Override
+  public String toString() {
+    return opType.toString() + "\n";
+  }
 }

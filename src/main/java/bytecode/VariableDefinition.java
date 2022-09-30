@@ -12,4 +12,8 @@ public class VariableDefinition extends ByteCodeDefinition {
     this.name = name;
   }
 
+  @Override
+  public String toString() {
+    return getOpType().toString() + "\t" + name + "\n";
+  }
 }
