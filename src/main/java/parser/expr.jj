@@ -15,6 +15,7 @@ import util.DFS;
 class ExpressionParser {
     public static void main( String[] args )
         throws NumberFormatException, ParseException {
+        String name = "1+2+3-5*4+4/2";
         ExpressionParser parser = new ExpressionParser( System.in ) ;
         Node node = parser.expression();
         DFS dfs = new DFS();

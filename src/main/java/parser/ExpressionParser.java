@@ -6,10 +6,13 @@ import java.util.ArrayList;
 
 import bytecode.ByteCodeDefinition;
 import bytecode.ByteCodeGenerator;
+import executor.ByteCodeExecutor;
+import objects.ICObject;
 import util.DFS;
 class ExpressionParser implements ExpressionParserConstants {
     public static void main( String[] args )
         throws NumberFormatException, ParseException {
+        String name = "1+2+3-5*4+4/2";
         ExpressionParser parser = new ExpressionParser( System.in ) ;
         Node node = parser.expression();
         DFS dfs = new DFS();
@@ -17,9 +20,10 @@ class ExpressionParser implements ExpressionParserConstants {
       ByteCodeGenerator byteCodeGenerator = new ByteCodeGenerator();
       byteCodeGenerator.generateByteCode(node);
       ArrayList<ByteCodeDefinition> codeContainer = byteCodeGenerator.getCodeContainer();
-      System.out.println(codeContainer);
-//      System.out.println(dfs.getNodes().toString());
-//      System.out.println(dfs.getEdges().toString());
+      ByteCodeExecutor byteCodeExecutor = new ByteCodeExecutor();
+      byteCodeExecutor.setCodePool(codeContainer);
+      ICObject run = byteCodeExecutor.run();
+      System.out.println(run);
     }
 
   final public Node expression() throws ParseException {Token t = null;

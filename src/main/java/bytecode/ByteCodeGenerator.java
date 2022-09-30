@@ -14,6 +14,9 @@ public class ByteCodeGenerator extends DFS {
 
   private ArrayList<ByteCodeDefinition> codeContainer = new ArrayList<>();
 
+  public ByteCodeGenerator() {
+  }
+
   public ArrayList<ByteCodeDefinition> getCodeContainer() {
     return codeContainer;
   }

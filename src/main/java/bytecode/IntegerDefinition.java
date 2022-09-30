@@ -5,7 +5,7 @@ public class IntegerDefinition extends ByteCodeDefinition{
   private int data;
 
   public IntegerDefinition() {
-    setOpType(OPType.STORE);
+    setOpType(OPType.LOAD_CONSTANT);
   }
 
   public Integer getData() {
@@ -18,6 +18,6 @@ public class IntegerDefinition extends ByteCodeDefinition{
 
   @Override
   public String toString() {
-    return "Load\t" + data + "\n";
+    return "LoadConstant\t" + data + "\n";
   }
 }

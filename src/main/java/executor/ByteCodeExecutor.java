@@ -1,14 +1,20 @@
 package executor;
 
-import bytecode.ByteCodeDefinition;
+import bytecode.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Stack;
-import bytecode.OPType;
+
+import objects.ICDouble;
+import objects.ICInt;
+import objects.ICObject;
 
 public class ByteCodeExecutor {
 
-  ArrayList<ByteCodeDefinition> codePool;
+  private ArrayList<ByteCodeDefinition> codePool;
+  private final Stack<ICObject> operandStack = new Stack<>();
+  private final HashMap<String, ICObject> symbolTable = new HashMap<>();
 
   public ArrayList<ByteCodeDefinition> getCodePool() {
     return codePool;
@@ -18,19 +24,143 @@ public class ByteCodeExecutor {
     this.codePool = codePool;
   }
 
-  public Object run() {
-    Stack<ByteCodeDefinition> executingStack = new Stack<>();
+  public ICObject run() {
+//    try{
+//      for (ByteCodeDefinition code : codePool) {
+//
+//        switch (code.getOpType()) {
+//          case PLUS:
+//            executePlus();
+//          case MINUS:
+//            executeMinus();
+//          case DIV:
+//            executeDiv();
+//          case LOAD:
+//            executeLoad(code);
+//          case STORE:
+//            executeStore(code);
+//          case TIMES:
+//            executeMinus();
+//          case LOAD_CONSTANT:
+//            executeLoadConstant(code);
+//        }
+//      }
+//      return operandStack.pop();
+//    }catch (Exception e) {
+//      System.err.println(e);
+//    }
+//    return null;
+
     for (ByteCodeDefinition code : codePool) {
 
       switch (code.getOpType()) {
+        case PLUS:
+          executePlus();
+          break;
         case MINUS:
+          executeMinus();
+          break;
         case DIV:
+          executeDiv();
+          break;
         case LOAD:
+          executeLoad(code);
+          break;
         case STORE:
+          executeStore(code);
+          break;
         case TIMES:
-        default:
+          executeTimes();
+          break;
+        case LOAD_CONSTANT:
+          executeLoadConstant(code);
       }
     }
-    return null;
+    return operandStack.pop();
   }
+
+  public void executeLoadConstant(ByteCodeDefinition codeDefinition) {
+    if (codeDefinition instanceof IntegerDefinition) {
+      operandStack.push(
+              new ICInt(((IntegerDefinition) codeDefinition).getData())
+      );
+    }else if (codeDefinition instanceof DoubleDefinition) {
+      operandStack.push(
+              new ICDouble(((DoubleDefinition) codeDefinition).getData())
+      );
+    }
+  }
+
+  public void executeLoad(ByteCodeDefinition codeDefinition) {
+    System.out.println(codeDefinition);
+    if (codeDefinition.getOpType() == OPType.LOAD) {
+      String name = ((VariableDefinition) codeDefinition).getName();
+      ICObject icObject = symbolTable.get(name);
+      if (icObject == null) {
+        throw new RuntimeException(name + " not in symbol table");
+      }
+      operandStack.push(icObject);
+    }
+    throw new RuntimeException("optype is not LOAD");
+  }
+
+  public void executeStore(ByteCodeDefinition codeDefinition) {
+    String name = ((VariableDefinition) codeDefinition).getName();
+    symbolTable.put(name, operandStack.peek());
+  }
+
+
+  private void executeMinus() {
+    ICObject o2 = operandStack.pop();
+    ICObject o1 = operandStack.pop();
+    double t1 = traitOperand(o1);
+    double t2 = traitOperand(o2);
+
+    if (o1 instanceof ICDouble || o2 instanceof ICDouble)
+      operandStack.push(new ICDouble(t1 - t2));
+    else
+      operandStack.push(new ICInt((int)(t1 - t2)));
+  }
+
+  private void executePlus() {
+    ICObject o2 = operandStack.pop();
+    ICObject o1 = operandStack.pop();
+    double t1 = traitOperand(o1);
+    double t2 = traitOperand(o2);
+
+    if (o1 instanceof ICDouble || o2 instanceof ICDouble)
+      operandStack.push(new ICDouble(t1 + t2));
+    else
+      operandStack.push(new ICInt((int)(t1 + t2)));
+  }
+
+  private void executeTimes() {
+    ICObject o2 = operandStack.pop();
+    ICObject o1 = operandStack.pop();
+    double t1 = traitOperand(o1);
+    double t2 = traitOperand(o2);
+
+    if (o1 instanceof ICDouble || o2 instanceof ICDouble)
+      operandStack.push(new ICDouble(t1 * t2));
+    else
+      operandStack.push(new ICInt((int)(t1 * t2)));
+  }
+
+  private void executeDiv() {
+    ICObject o2 = operandStack.pop();
+    ICObject o1 = operandStack.pop();
+    double t1 = traitOperand(o1);
+    double t2 = traitOperand(o2);
+
+    operandStack.push(new ICDouble(t1 / t2));
+  }
+
+  private double traitOperand(ICObject o) {
+    if (o instanceof ICDouble)
+      return (double) ((ICDouble) o).getValue();
+    else if (o instanceof ICInt)
+      return (int) ((ICInt) o).getValue();
+    throw new RuntimeException("can not trait double or int from ICObject o");
+  }
+
 }

@@ -6,7 +6,7 @@ public class DoubleDefinition extends ByteCodeDefinition{
 
   @Override
   public String toString() {
-    return "Load\t" + data + "\n";
+    return "LoadConstant\t" + data + "\n";
   }
 
   public Double getData() {
@@ -14,7 +14,7 @@ public class DoubleDefinition extends ByteCodeDefinition{
   }
 
   public DoubleDefinition() {
-    setOpType(OPType.STORE);
+    setOpType(OPType.LOAD_CONSTANT);
   }
 
   public void setData(double data) {
