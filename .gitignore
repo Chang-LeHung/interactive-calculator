@@ -1,5 +1,5 @@
 /target
 # 本行为注释
-.idea/          # 忽略仓库中所有.idea 目录
-/.idea/         # 忽略仓库中根目录下的.idea 目录
+.idea/
+/.idea/
 *.class
