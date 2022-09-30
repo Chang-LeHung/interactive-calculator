@@ -1,0 +1,158 @@
+
+
+
+options {
+    STATIC = false ;
+    IGNORE_CASE = true;
+//    LOOKAHEAD = 2;  // 全局设置
+}
+
+PARSER_BEGIN(ExpressionParser)
+    package parser;
+import java.io.PrintStream ;
+import java.util.ArrayList;
+import util.DFS;
+class ExpressionParser {
+    public static void main( String[] args )
+        throws NumberFormatException, ParseException {
+        ExpressionParser parser = new ExpressionParser( System.in ) ;
+        Node node = new Node();
+        parser.expression(node);
+        DFS dfs = new DFS();
+        dfs.dumpAST(node);
+        System.out.println(dfs.getNodes().toString());
+        System.out.println(dfs.getEdges().toString());
+    }
+}
+PARSER_END(ExpressionParser)
+
+
+SKIP : { " " | "\n" | "\r" | "\r\n" | "\t"}
+TOKEN : { < SEMI : ";" > }
+TOKEN : { <COMMA : "," > }
+
+TOKEN : { < PLUS : "+" > }
+TOKEN : { <TIMES : "*" >}
+TOKEN : { < DIV : "/" > }
+TOKEN : { < MINUS : "-" > }
+TOKEN : { < AND : "&">}
+TOKEN : { < OR : "|">}
+TOKEN : { < NOT : "~" >}
+TOKEN : { < LPARN : "(" >}
+TOKEN : { < RPARN : ")" >}
+TOKEN : { < ASSIGN : "=">}
+
+
+
+TOKEN : { < NUMBER : <DIGITS>
+                   | <DIGITS> "." <DIGITS>
+                   | <DIGITS> "."
+                   | "." <DIGITS>
+                   >
+        }
+
+TOKEN : { < #DIGITS : (["0"-"9"])+ > }
+TOKEN : { < #CHARACTER : ["a"-"z", "A"-"Z"] >}
+TOKEN : { <STRING : ("\"" | "\'")(<CHARACTER>)+("\"" | "\'")>}
+TOKEN : { < IDENTIFIER :  (<CHARACTER> ((<CHARACTER> | <NUMBER> ))*) >}
+
+void expression(Node node):
+{
+  Token t = null;
+}
+{
+    {
+      node.setLeftChild(new Node());
+    }
+    term(node.getLeftChild())
+    (
+        t = <MINUS>
+        {
+           node.setValue(t.image);
+           node.setNodeType(Node.Type.OPERATOR);
+           node.setRightChild(new Node());
+        }
+        expression(node.getRightChild())
+        |
+        (
+        t = <PLUS>
+        {
+           node.setValue(t.image);
+           node.setNodeType(Node.Type.OPERATOR);
+           node.setRightChild(new Node());
+         }
+         expression(node.getRightChild())
+        )
+        |
+        (
+        t = <ASSIGN>
+        {
+           node.setValue(t.image);
+           node.setNodeType(Node.Type.OPERATOR);
+           node.setRightChild(new Node());
+        }
+        expression(node.getRightChild())
+        )
+    )?
+}
+
+void term(Node node):
+{
+  Token t;
+  Node L = new Node();
+  Node R = new Node();
+}
+{
+    LOOKAHEAD(2)
+    primary(node)
+    |
+    (
+
+        primary(L)
+        t = <TIMES>
+        {
+          node.setLeftChild(L);
+          node.setRightChild(R);
+          node.setValue(t.image);node.setNodeType(Node.Type.OPERATOR);
+        }
+        term(node.getRightChild())
+        |
+        (
+        t = <DIV>
+        {
+          node.setLeftChild(L);
+          node.setRightChild(R);
+          node.setValue(t.image);node.setNodeType(Node.Type.OPERATOR);
+        }
+        term(node.getRightChild())
+        )
+    )?
+}
+
+void primary(Node node):
+{
+  Token t = null;
+}
+{
+   (
+      t = <NUMBER>
+      {
+        node.setNodeType(Node.Type.NUMBER);
+        node.setValue(t.image);
+      }
+   )
+   |
+   (
+       t = <IDENTIFIER>
+       {
+         node.setNodeType(Node.Type.IDENTIFIER);
+         node.setValue(t.image);
+       }
+   )
+   |
+   (
+       <LPARN>
+       expression(node)
+       <RPARN>
+   )
+}

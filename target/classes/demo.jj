@@ -1,0 +1,102 @@
+/* calculator0.jj An interactive calculator. */
+options {
+    STATIC = false ;
+}
+PARSER_BEGIN(Calculator)
+    package parser.demo02;
+    import java.io.PrintStream ;
+    class Calculator {
+        public static void main( String[] args )
+            throws ParseException, TokenMgrError, NumberFormatException {
+            Calculator parser = new Calculator( System.in ) ;
+            parser.Start( System.out ) ;
+        }
+        double previousValue = 0.0 ;
+    }
+PARSER_END(Calculator)
+
+
+SKIP : { " " }
+TOKEN : { < EOL : "\n" | "\r" | "\r\n" > }
+TOKEN : { < PLUS : "+" > }
+TOKEN : { < MINUS : "-" > }
+TOKEN : { < TIMES : "*" > }
+TOKEN : { < DIVIDE : "/" > }
+TOKEN : { < OPEN_PAR : "(" > }
+TOKEN : { < CLOSE_PAR : ")" > }
+TOKEN : { < PREVIOUS : "$" > }
+TOKEN : { < NUMBER : <DIGITS>
+                   | <DIGITS> "." <DIGITS>
+                   | <DIGITS> "."
+                   | "."<DIGITS> >
+        }
+TOKEN : { < #DIGITS : (["0"-"9"])+ > }
+
+
+void Start(PrintStream printStream) throws NumberFormatException :
+{}
+{
+    (
+        previousValue = Expression()
+        <EOL> { printStream.println( previousValue ) ; }
+    )*
+    <EOF>
+}
+
+double Expression() throws NumberFormatException :
+{
+    double i ;
+    double value ;
+}
+{
+    value = Term()
+    (
+        (
+        <PLUS>
+        i = Expression()
+        { value += i ; }
+        )
+        |
+        (
+        <MINUS>
+        i = Expression()
+        { value -= i ; }
+        )
+    )?
+    { return value ; }
+}
+
+double Term() throws NumberFormatException :
+{
+    double i ;
+    double value ;
+}
+{
+    value = Primary()
+    (
+        <TIMES>
+        i = Term()
+        { value *= i ; }
+        | <DIVIDE>
+        i = Term()
+        { value /= i ; }
+    )? // 这里注意?和*的区别
+    // 参考和 https://www.cnblogs.com/suhaha/p/11733716.html 当中代码的区别
+    { return value ; }
+}
+
+double Primary() throws NumberFormatException :
+{
+Token t ;
+double d ;
+}
+{
+    t=<NUMBER>
+    { return Double.parseDouble( t.image ) ; }
+|   <PREVIOUS>
+    { return previousValue ; }
+|   <OPEN_PAR> d=Expression() <CLOSE_PAR>
+    { return d ; }
+|   <MINUS> d=Primary()
+    { return -d ; }
+}
