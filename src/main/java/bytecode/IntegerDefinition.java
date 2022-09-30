@@ -12,5 +12,7 @@ public class IntegerDefinition extends ByteCodeDefinition{
     return data;
   }
 
-
+  public void setData(int data) {
+    this.data = data;
+  }
 }

@@ -71,11 +71,13 @@ Node expression():
               ret = new Node();
               ret.setLeftChild(node);
               ret.setNodeType(Node.Type.OPERATOR);
+              node.setParent(ret);
               ret.setValue(t.image);
             }
             node = term()
             {
               ret.setRightChild(node);
+              node.setParent(ret);
               node = ret;
             }
         )
@@ -85,6 +87,7 @@ Node expression():
             {
               ret = new Node();
               ret.setLeftChild(node);
+              node.setParent(ret);
               ret.setNodeType(Node.Type.OPERATOR);
               ret.setValue(t.image);
             }
@@ -100,12 +103,14 @@ Node expression():
             {
                 ret = new Node();
                 ret.setLeftChild(node);
+                node.setParent(ret);
                 ret.setNodeType(Node.Type.ASSIGN);
                 ret.setValue(t.image);
             }
             node = expression()
             {
               ret.setRightChild(node);
+              node.setParent(ret);
               node = ret;
             }
         )
@@ -131,12 +136,14 @@ Node term():
             {
               ret = new Node();
               ret.setLeftChild(node);
+              node.setParent(ret);
               ret.setNodeType(Node.Type.OPERATOR);
               ret.setValue(t.image);
             }
             node = primary()
             {
               ret.setRightChild(node);
+              node.setParent(ret);
               node = ret;
             }
         )
@@ -146,12 +153,14 @@ Node term():
             {
               ret = new Node();
               ret.setLeftChild(node);
+              node.setParent(ret);
               ret.setNodeType(Node.Type.OPERATOR);
               ret.setValue(t.image);
             }
             node = primary()
             {
               ret.setRightChild(node);
+              node.setParent(ret);
               node = ret;
             }
         )

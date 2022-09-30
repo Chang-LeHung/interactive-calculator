@@ -7,7 +7,7 @@ public class ByteCodeDefinition {
     enum OPType {
       STORE,
       LOAD,
-      MUL,
+      TIMES,
       DIV,
       PLUS,
       MINUS,

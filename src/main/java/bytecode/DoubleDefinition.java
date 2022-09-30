@@ -11,4 +11,8 @@ public class DoubleDefinition extends ByteCodeDefinition{
   public DoubleDefinition() {
     setOpType(OPType.STORE);
   }
+
+  public void setData(double data) {
+    this.data = data;
+  }
 }

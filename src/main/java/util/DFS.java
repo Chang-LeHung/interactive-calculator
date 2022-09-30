@@ -21,12 +21,22 @@ public class DFS {
         tmp = node.getValue();
       nodes.append(num).append("[label=\"").append(tmp).append("\"];\n");
       int mn = num++;
+
+
       int n = dumpAST(node.getLeftChild());
-      if (n != -1)
+      if (n != -1) {
         edges.append(mn).append("->").append(n).append(";\n");
+        edges.append(n).append("->").append(mn).append(";\n");
+      }
+
+
       n = dumpAST(node.getRightChild());
-      if (n != -1)
+      if (n != -1) {
         edges.append(mn).append("->").append(n).append(";\n");
+        edges.append(n).append("->").append(mn).append(";\n");
+      }
+
+
       return mn;
     }
     return -1;

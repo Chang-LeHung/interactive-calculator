@@ -13,6 +13,14 @@ public class Node {
     ASSIGN
   }
 
+  public Node getParent() {
+    return parent;
+  }
+
+  public void setParent(Node parent) {
+    this.parent = parent;
+  }
+
   private String value;
   private Type nodeType;
 
@@ -28,6 +36,7 @@ public class Node {
 
   private Node leftChild;
   private Node rightChild;
+  private Node parent;
 
   public String getValue() {
     return value;
