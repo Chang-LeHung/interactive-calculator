@@ -19,14 +19,12 @@ public class ByteCodeExecutor {
   }
 
   public Object run() {
-    Stack<Object> executingStack = new Stack<>();
+    Stack<ByteCodeDefinition> executingStack = new Stack<>();
     for (ByteCodeDefinition code : codePool) {
 
       switch (code.getOpType()) {
         case MINUS:
-          System.out.println();
         case DIV:
-          System.out.println();
         case LOAD:
         case STORE:
         case TIMES:
