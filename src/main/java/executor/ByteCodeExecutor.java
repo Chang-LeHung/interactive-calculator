@@ -25,32 +25,6 @@ public class ByteCodeExecutor {
   }
 
   public ICObject run(ArrayList<ByteCodeDefinition> codePool) {
-//    try{
-//      for (ByteCodeDefinition code : codePool) {
-//
-//        switch (code.getOpType()) {
-//          case PLUS:
-//            executePlus();
-//          case MINUS:
-//            executeMinus();
-//          case DIV:
-//            executeDiv();
-//          case LOAD:
-//            executeLoad(code);
-//          case STORE:
-//            executeStore(code);
-//          case TIMES:
-//            executeMinus();
-//          case LOAD_CONSTANT:
-//            executeLoadConstant(code);
-//        }
-//      }
-//      return operandStack.pop();
-//    }catch (Exception e) {
-//      System.err.println(e);
-//    }
-//    return null;
-
     for (ByteCodeDefinition code : codePool) {
 
       switch (code.getOpType()) {
