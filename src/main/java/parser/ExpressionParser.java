@@ -3,11 +3,6 @@
     package parser;
 import java.io.PrintStream ;
 import java.util.ArrayList;
-
-import bytecode.ByteCodeDefinition;
-import bytecode.ByteCodeGenerator;
-import executor.ByteCodeExecutor;
-import objects.ICObject;
 import util.DFS;
 class ExpressionParser implements ExpressionParserConstants {
     public static void main( String[] args )
@@ -17,13 +12,8 @@ class ExpressionParser implements ExpressionParserConstants {
         Node node = parser.expression();
         DFS dfs = new DFS();
         dfs.dumpAST(node);
-        ByteCodeGenerator byteCodeGenerator = new ByteCodeGenerator();
-        byteCodeGenerator.generateByteCode(node);
-        ArrayList<ByteCodeDefinition> codeContainer = byteCodeGenerator.getCodeContainer();
-        ByteCodeExecutor byteCodeExecutor = new ByteCodeExecutor();
-        byteCodeExecutor.setCodePool(codeContainer);
-        ICObject run = byteCodeExecutor.run();
-        System.out.println(run);
+        System.out.println(dfs.getNodes().toString());
+        System.out.println(dfs.getEdges().toString());
     }
 
   final public Node expression() throws ParseException {Token t = null;
@@ -162,7 +152,15 @@ ret.setNodeType(Node.Type.NUMBER);
 ret = new Node();
       t = jj_consume_token(IDENTIFIER);
 ret.setNodeType(Node.Type.IDENTIFIER);
-             ret.setValue(t.image);
+            ret.setValue(t.image);
+      break;
+      }{
+ret = new Node();
+      t = jj_consume_token(IDENTIFIER);
+      jj_consume_token(LPARN);
+ret.setNodeType(Node.Type.IDENTIFIER);
+            ret.setValue(t.image);
+      jj_consume_token(RPARN);
       break;
       }
     case LPARN:{

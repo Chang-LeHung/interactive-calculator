@@ -188,13 +188,23 @@ Node primary():
           }
        )
        |
+       LOOKAHEAD(2)
+       {ret = new Node();}
+       t = <IDENTIFIER>
+       {
+       ret.setNodeType(Node.Type.IDENTIFIER);
+       ret.setValue(t.image);
+       }
+       |
        (
-           {ret = new Node();}
-           t = <IDENTIFIER>
-           {
-             ret.setNodeType(Node.Type.IDENTIFIER);
-             ret.setValue(t.image);
-           }
+            {ret = new Node();}
+            t = <IDENTIFIER>
+            <LPARN>
+            {
+            ret.setNodeType(Node.Type.IDENTIFIER);
+            ret.setValue(t.image);
+            }
+            <RPARN>
        )
        |
        (
