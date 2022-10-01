@@ -83,7 +83,6 @@ public class FunctionDefinition extends ByteCodeDefinition
         return Math.log(d);
       case LOG10:
         return Math.log10(d);
-
     }
     return 0;
   }
