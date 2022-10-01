@@ -1,5 +1,6 @@
 package executor;
 
+import builtin.BuiltInCommand;
 import bytecode.*;
 
 import java.util.ArrayList;
@@ -25,34 +26,43 @@ public class ByteCodeExecutor {
   }
 
   public ICObject run(ArrayList<ByteCodeDefinition> codePool) {
-    for (ByteCodeDefinition code : codePool) {
+    operandStack.clear();
+    try {
+      for (ByteCodeDefinition code : codePool) {
 
-      switch (code.getOpType()) {
-        case PLUS:
-          executePlus();
-          break;
-        case MINUS:
-          executeMinus();
-          break;
-        case DIV:
-          executeDiv();
-          break;
-        case LOAD:
-          executeLoad(code);
-          break;
-        case STORE:
-          executeStore(code);
-          break;
-        case TIMES:
-          executeTimes();
-          break;
-        case LOAD_CONSTANT:
-          executeLoadConstant(code);
-          break;
-        case FUNCTION:
-          executeFunction(code);
-          break;
+        switch (code.getOpType()) {
+          case PLUS:
+            executePlus();
+            break;
+          case MINUS:
+            executeMinus();
+            break;
+          case DIV:
+            executeDiv();
+            break;
+          case LOAD:
+            executeLoad(code);
+            break;
+          case STORE:
+            executeStore(code);
+            break;
+          case TIMES:
+            executeTimes();
+            break;
+          case LOAD_CONSTANT:
+            executeLoadConstant(code);
+            break;
+          case FUNCTION:
+            executeFunction(code);
+            break;
+        }
       }
+    }catch (Exception e) {
+      System.err.println(e);;
+      return null;
+    }
+    if (operandStack.isEmpty()) {
+      return null;
     }
     return operandStack.pop();
   }
@@ -86,21 +96,46 @@ public class ByteCodeExecutor {
   }
 
   private void executeLoad(ByteCodeDefinition codeDefinition) {
-    System.out.println(codeDefinition);
     if (codeDefinition.getOpType() == OPType.LOAD) {
       String name = ((VariableDefinition) codeDefinition).getName();
-      ICObject icObject = symbolTable.get(name);
-      if (icObject == null) {
-        throw new RuntimeException(name + " not in symbol table");
+      if (!matchBuiltInCommand(name)) {
+        ICObject icObject = symbolTable.get(name);
+        if (icObject == null) {
+          throw new RuntimeException(name + " not in symbol table");
+        }
+        operandStack.push(icObject);
       }
-      operandStack.push(icObject);
+      return;
     }
     throw new RuntimeException("optype is not LOAD");
   }
 
   private void executeStore(ByteCodeDefinition codeDefinition) {
     String name = ((VariableDefinition) codeDefinition).getName();
-    symbolTable.put(name, operandStack.peek());
+    if (!matchBuiltInCommand(name))
+      symbolTable.put(name, operandStack.pop());
+  }
+
+  private boolean matchBuiltInCommand(String name) {
+    if (BuiltInCommand.isBuiltInCommand(name)) {
+      if (name.equalsIgnoreCase("pi")) {
+        ICDouble icDouble = new ICDouble(Math.PI);
+        operandStack.push(icDouble);
+      }else if (name.equalsIgnoreCase("e")) {
+        ICDouble icDouble = new ICDouble(Math.PI);
+        operandStack.push(icDouble);
+      }else if (name.equalsIgnoreCase("l")) {
+        System.out.println("============================");
+        System.out.println("\033[0;31m>>> All table symbols and variables are as follows <<<");
+        symbolTable.forEach((x, y) -> {
+          System.out.print(x + " = " + y + ";\t");
+        });
+        System.out.println("\033[0m");
+        System.out.println("============================");
+      }
+      return true;
+    }
+    return false;
   }
 
 
