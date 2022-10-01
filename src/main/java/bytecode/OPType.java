@@ -8,4 +8,5 @@ public enum OPType {
   PLUS,
   MINUS,
   LOAD_CONSTANT, // LOAD 常量
+  FUNCTION
 }

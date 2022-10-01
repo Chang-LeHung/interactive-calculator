@@ -24,7 +24,7 @@ public class ByteCodeExecutor {
     this.codePool = codePool;
   }
 
-  public ICObject run() {
+  public ICObject run(ArrayList<ByteCodeDefinition> codePool) {
 //    try{
 //      for (ByteCodeDefinition code : codePool) {
 //
@@ -74,12 +74,32 @@ public class ByteCodeExecutor {
           break;
         case LOAD_CONSTANT:
           executeLoadConstant(code);
+          break;
+        case FUNCTION:
+          executeFunction(code);
+          break;
       }
     }
     return operandStack.pop();
   }
 
-  public void executeLoadConstant(ByteCodeDefinition codeDefinition) {
+  private void executeFunction(ByteCodeDefinition codeDefinition) {
+    if (codeDefinition instanceof FunctionDefinition) {
+      ICObject pop = operandStack.pop();
+      double t;
+      if (pop instanceof ICDouble) {
+        t = (double) ((ICDouble) pop).getValue();
+      }else {
+        t = (Integer) ((ICInt) pop).getValue();
+      }
+      Double ans = ((FunctionDefinition) codeDefinition).apply(t);
+      operandStack.push(new ICDouble(ans));
+      return;
+    }
+    throw new RuntimeException("codeDefinition should be FunctionDefinition");
+  }
+
+  private void executeLoadConstant(ByteCodeDefinition codeDefinition) {
     if (codeDefinition instanceof IntegerDefinition) {
       operandStack.push(
               new ICInt(((IntegerDefinition) codeDefinition).getData())
@@ -91,7 +111,7 @@ public class ByteCodeExecutor {
     }
   }
 
-  public void executeLoad(ByteCodeDefinition codeDefinition) {
+  private void executeLoad(ByteCodeDefinition codeDefinition) {
     System.out.println(codeDefinition);
     if (codeDefinition.getOpType() == OPType.LOAD) {
       String name = ((VariableDefinition) codeDefinition).getName();
@@ -104,7 +124,7 @@ public class ByteCodeExecutor {
     throw new RuntimeException("optype is not LOAD");
   }
 
-  public void executeStore(ByteCodeDefinition codeDefinition) {
+  private void executeStore(ByteCodeDefinition codeDefinition) {
     String name = ((VariableDefinition) codeDefinition).getName();
     symbolTable.put(name, operandStack.peek());
   }

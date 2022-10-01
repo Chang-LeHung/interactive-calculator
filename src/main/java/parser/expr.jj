@@ -176,8 +176,10 @@ Node primary():
 {
   Token t = null;
   Node ret = null;
+  Node function = null;
 }
 {
+
     (
        (
           {ret = new Node();}
@@ -189,22 +191,27 @@ Node primary():
        )
        |
        LOOKAHEAD(2)
-       {ret = new Node();}
+       {ret = new Node();function = new Node();}
        t = <IDENTIFIER>
+       <LPARN>
        {
-       ret.setNodeType(Node.Type.IDENTIFIER);
+       ret.setNodeType(Node.Type.FUNCTION);
        ret.setValue(t.image);
        }
+       function = expression()
+       {
+        ret.setLeftChild(function);
+        function.setParent(ret);
+       }
+       <RPARN>
        |
        (
-            {ret = new Node();}
+           {ret = new Node();}
             t = <IDENTIFIER>
-            <LPARN>
             {
             ret.setNodeType(Node.Type.IDENTIFIER);
             ret.setValue(t.image);
             }
-            <RPARN>
        )
        |
        (

@@ -26,42 +26,55 @@ public class ByteCodeGenerator extends DFS {
     if (node != null) {
       generateByteCode(node.getLeftChild());
       generateByteCode(node.getRightChild());
-      if (node.getNodeType() == Node.Type.IDENTIFIER) {
-        VariableDefinition variableDefinition = new VariableDefinition();
-        variableDefinition.setName(node.getValue());
-        if (node.getParent().getNodeType() != Node.Type.ASSIGN) {
-          variableDefinition.setOpType(OPType.LOAD);
-          codeContainer.add(variableDefinition);
-        }
-      }else if (node.getNodeType() == Node.Type.NUMBER) {
-        if (node.getValue().contains(".")) {
-          DoubleDefinition doubleDefinition = new DoubleDefinition();
-          doubleDefinition.setData(Double.parseDouble(node.getValue()));
-          codeContainer.add(doubleDefinition);
-        }else {
-          IntegerDefinition doubleDefinition = new IntegerDefinition();
-          doubleDefinition.setData(Integer.parseInt(node.getValue()));
-          codeContainer.add(doubleDefinition);
-        }
-      }else {
-        if (node.getNodeType() == Node.Type.MINUS) {
+
+      switch (node.getNodeType()) {
+        case IDENTIFIER:
+          VariableDefinition variableDefinition = new VariableDefinition();
+          variableDefinition.setName(node.getValue());
+          if (node.getParent().getNodeType() != Node.Type.ASSIGN) {
+            variableDefinition.setOpType(OPType.LOAD);
+            codeContainer.add(variableDefinition);
+          }
+          break;
+        case NUMBER:
+          if (node.getValue().contains(".")) {
+            DoubleDefinition doubleDefinition = new DoubleDefinition();
+            doubleDefinition.setData(Double.parseDouble(node.getValue()));
+            codeContainer.add(doubleDefinition);
+          }else {
+            IntegerDefinition doubleDefinition = new IntegerDefinition();
+            doubleDefinition.setData(Integer.parseInt(node.getValue()));
+            codeContainer.add(doubleDefinition);
+          }
+          break;
+        case FUNCTION:
+          FunctionDefinition functionDefinition = new FunctionDefinition();
+          functionDefinition.setName(node.getValue());
+          codeContainer.add(functionDefinition);
+          break;
+        case MINUS:
           MINUSDefinition minusDefinition = new MINUSDefinition();
           codeContainer.add(minusDefinition);
-        }else if (node.getNodeType() == Node.Type.PLUS) {
+          break;
+        case PLUS:
           PLUSDefinition plusDefinition = new PLUSDefinition();
           codeContainer.add(plusDefinition);
-        }else if (node.getNodeType() == Node.Type.TIMES) {
+          break;
+        case TIMES:
           TIMESDefinition timesDefinition = new TIMESDefinition();
           codeContainer.add(timesDefinition);
-        }else if (node.getNodeType() == Node.Type.DIV) {
+          break;
+        case DIV:
           DIVDefinition divDefinition = new DIVDefinition();
           codeContainer.add(divDefinition);
-        }else if (node.getNodeType() == Node.Type.ASSIGN) {
-          VariableDefinition variableDefinition = new VariableDefinition();
-          variableDefinition.setName(node.getLeftChild().getValue());
-          variableDefinition.setOpType(OPType.STORE);
-          codeContainer.add(variableDefinition);
-        }
+          break;
+        case ASSIGN:
+          VariableDefinition definition = new VariableDefinition();
+          definition.setName(node.getLeftChild().getValue());
+          definition.setOpType(OPType.STORE);
+          codeContainer.add(definition);
+          break;
+
       }
     }
   }

@@ -1,2 +1,7 @@
-package PACKAGE_NAME;public class StreamTest {
+
+public class StreamTest {
+  public void test() {
+    Integer integer = new Integer(1);
+    integer.intValue();
+  }
 }

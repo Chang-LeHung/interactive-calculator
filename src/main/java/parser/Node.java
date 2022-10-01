@@ -10,7 +10,8 @@ public class Node {
     TIMES,
     DIV,
     OPERATOR,
-    ASSIGN
+    ASSIGN,
+    FUNCTION
   }
 
   public Node getParent() {
