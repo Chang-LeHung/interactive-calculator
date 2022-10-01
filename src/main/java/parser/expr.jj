@@ -12,16 +12,27 @@ PARSER_BEGIN(ExpressionParser)
 import java.io.PrintStream ;
 import java.util.ArrayList;
 import util.DFS;
+import bytecode.ByteCodeGenerator;
+import executor.ByteCodeExecutor;
+
 class ExpressionParser {
     public static void main( String[] args )
         throws NumberFormatException, ParseException {
         String name = "1+2+3-5*4+4/2";
         ExpressionParser parser = new ExpressionParser( System.in ) ;
-        Node node = parser.expression();
         DFS dfs = new DFS();
-        dfs.dumpAST(node);
-        System.out.println(dfs.getNodes().toString());
-        System.out.println(dfs.getEdges().toString());
+        ByteCodeGenerator generator = new ByteCodeGenerator();
+        while (true) {
+          Node node = parser.expression();
+          dfs.dumpAST(node);
+          System.out.println(dfs.getNodes().toString());
+          System.out.println(dfs.getEdges().toString());
+          generator.generateByteCode(node);
+          ByteCodeExecutor executor = new ByteCodeExecutor();
+          ICObject run = executor.run(generator.getCodeContainer());
+          System.out.println(run);
+          System.in.read();
+        }
     }
 }
 PARSER_END(ExpressionParser)
@@ -116,6 +127,7 @@ Node expression():
             }
         )
     )*
+//    <SEMI>
     {
 //      System.out.println("In expression : ret = " + node);
       return node;
