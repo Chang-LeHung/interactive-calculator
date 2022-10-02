@@ -58,7 +58,7 @@ public class ByteCodeExecutor {
         }
       }
     }catch (Exception e) {
-      System.err.println(e);;
+      System.err.println(e.getMessage());;
       return null;
     }
     if (operandStack.isEmpty()) {
