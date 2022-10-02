@@ -32,7 +32,7 @@ ICInt{val=1}
 
 ```bash
 >pwd
-/home/huchang/interactive-calculator
+/home/$HOME/interactive-calculator
 >ls
 dependency-reduced-pom.xml
 pom.xml
