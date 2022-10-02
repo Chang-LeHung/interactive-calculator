@@ -28,3 +28,39 @@ ICInt{val=12}
 ICInt{val=1}
 ```
 
+### System command execution
+
+```bash
+>pwd
+/home/huchang/interactive-calculator
+>ls
+dependency-reduced-pom.xml
+pom.xml
+README.md
+src
+target
+>echo hello world
+hello world
+```
+
+### Variable and function Usage
+
+```bash
+>a=1
+>b=2
+>c=3
+>d=1+2+3+4+5*7-(2-3)*6
+>a
+ICInt{val=1}
+>d
+ICInt{val=51}
+>tan(a+b)
+ICDouble{val=-0.1425465430742778}
+>sin(d)
+ICDouble{val=0.6702291758433747}
+>cos(d)
+ICDouble{val=0.7421541968137826}
+>cot(d)
+ICDouble{val=1.1073140704146487}
+```
+
