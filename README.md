@@ -1,6 +1,6 @@
 # interactive-calculator
 
-A interactive calculator based on self-defined bytecode implemented in java
+A interactive calculator based on self-defined bytecode implemented in java.This is a self-learning project, if you are learning compile princinple, this project is pretty suitable for you!
 
 ## Introduction
 
