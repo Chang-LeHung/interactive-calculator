@@ -27,7 +27,5 @@ public class QuitHandler implements SignalHandler {
     Signal.handle(new Signal("TERM"), new QuitHandler());
     Signal.handle(new Signal("INT"), new QuitHandler());
     byte[] b = new byte[1024];
-    System.in.read(b);
-    System.out.println("hello world 1");
   }
 }
