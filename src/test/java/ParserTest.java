@@ -23,9 +23,8 @@ public class ParserTest {
     ByteCodeExecutor executor = new ByteCodeExecutor();
     System.out.println("start");
     ArrayList<String> list = new ArrayList<>();
-//    list.add("1+2+3;");
-//    list.add("a=1+2+4*8 - 2 + 5");
-    list.add("a=1");
+    list.add("1+2+3;");
+    list.add("a=1+2+4*8 - 2 + 5");
     list.add("a");
     list.add("l");
     list.add("1+2+4*2-5+6*3/2*4/2");
