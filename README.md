@@ -176,7 +176,7 @@ digraph AST {
 >
 ```
 
-you can use the output to generate a graph of expression AST with `graphiz`.
+you can use the output to generate a graph of expression AST with `graphiz`.If you do not download  `graphiz`, please download it first.
 
 - Create a file `demo.dot` and enter following content:
 
