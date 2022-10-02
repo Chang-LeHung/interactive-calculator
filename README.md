@@ -18,3 +18,13 @@ java -jar target/calculator-1.0-SNAPSHOT.jar execturo.Terminal
 
 ### Basic calculation
 
+```bash
+$java -jar target/calculator-1.0-SNAPSHOT.jar executor.Terminal
+>1+2;
+ICInt{val=3}
+>2+5-1+6
+ICInt{val=12}
+>2*(1+2)-5
+ICInt{val=1}
+```
+
