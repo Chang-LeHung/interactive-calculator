@@ -6,7 +6,7 @@ A interactive calculator based on self-defined bytecode implemented in java.This
 
 ## Introduction
 
-- Interactive calculator is calculator with some basic function, such as plus, minus, multiply and div.Besides, the calculator supports some useful math function : tanh, tan, sin, cos, cot.
+- Interactive calculator is calculator with some basic function, such as plus, minus, multiply and div.Besides, the calculator supports some useful math function and variable : log, log10, tanh, tan, sin, cos, cot, log, pi, e.
 - The most important funciton of this calculator is variable supporting, you can define variable in it and use it after defining.
 - You also can use system command in the calculator.
 
