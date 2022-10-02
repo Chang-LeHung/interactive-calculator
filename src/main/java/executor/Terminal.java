@@ -26,6 +26,7 @@ public class Terminal {
       String line = scanner.nextLine();
       if (BuiltIn.isBuiltInCommand(line)) {
         BuiltIn.execute(line);
+        continue;
       }
       try {
         if (BuiltIn.execSystemCommand(line))
