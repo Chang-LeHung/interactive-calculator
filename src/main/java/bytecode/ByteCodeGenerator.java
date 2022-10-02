@@ -35,7 +35,8 @@ public class ByteCodeGenerator extends DFS {
         case IDENTIFIER:
           VariableDefinition variableDefinition = new VariableDefinition();
           variableDefinition.setName(node.getValue());
-          if (node.getParent() == null ||
+          if (node.getParent() == null || node.getParent().getRightChild()
+            == node ||
                   node.getParent().getNodeType() != Node.Type.ASSIGN) {
             variableDefinition.setOpType(OPType.LOAD);
             codeContainer.add(variableDefinition);
