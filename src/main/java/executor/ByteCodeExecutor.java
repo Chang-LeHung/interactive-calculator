@@ -151,7 +151,7 @@ public class ByteCodeExecutor {
   private void executeStore(ByteCodeDefinition codeDefinition) {
     String name = ((VariableDefinition) codeDefinition).getName();
     if (!matchBuiltInCommand(name))
-      symbolTable.put(name, operandStack.pop());
+      symbolTable.put(name, operandStack.peek());
   }
 
   private boolean matchBuiltInCommand(String name) {
