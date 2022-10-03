@@ -4,6 +4,7 @@
 /Users/huchang/IdeaProjects/calculator/src/main/java/parser/ExpressionParser.java
 /Users/huchang/IdeaProjects/calculator/src/main/java/util/BuiltIn.java
 /Users/huchang/IdeaProjects/calculator/src/main/java/builtin/BuiltInCommand.java
+/Users/huchang/IdeaProjects/calculator/src/main/java/bytecode/AndDefinition.java
 /Users/huchang/IdeaProjects/calculator/src/main/java/parser/ExpressionParserTokenManager.java
 /Users/huchang/IdeaProjects/calculator/src/main/java/parser/ExpressionParserConstants.java
 /Users/huchang/IdeaProjects/calculator/src/main/java/bytecode/ByteCodeDefinition.java
@@ -17,7 +18,9 @@
 /Users/huchang/IdeaProjects/calculator/src/main/java/parser/Node.java
 /Users/huchang/IdeaProjects/calculator/src/main/java/executor/Echo.java
 /Users/huchang/IdeaProjects/calculator/src/main/java/objects/ICValue.java
+/Users/huchang/IdeaProjects/calculator/src/main/java/objects/ICIntBinary.java
 /Users/huchang/IdeaProjects/calculator/src/main/java/executor/ByteCodeExecutor.java
+/Users/huchang/IdeaProjects/calculator/src/main/java/bytecode/OrDefinition.java
 /Users/huchang/IdeaProjects/calculator/src/main/java/parser/Token.java
 /Users/huchang/IdeaProjects/calculator/src/main/java/bytecode/IntegerDefinition.java
 /Users/huchang/IdeaProjects/calculator/src/main/java/objects/ICInt.java

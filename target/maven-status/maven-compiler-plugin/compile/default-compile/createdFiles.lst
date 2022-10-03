@@ -1,5 +1,5 @@
 bytecode/ByteCodeGenerator.class
-executor/ByteCodeExecutor.class
 executor/Echo.class
+executor/ByteCodeExecutor.class
 util/BuiltIn.class
 executor/Terminal.class
