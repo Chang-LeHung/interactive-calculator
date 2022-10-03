@@ -11,7 +11,9 @@ public class Node {
     DIV,
     OPERATOR,
     ASSIGN,
-    FUNCTION
+    FUNCTION,
+    AND,
+    OR
   }
 
   public Node getParent() {

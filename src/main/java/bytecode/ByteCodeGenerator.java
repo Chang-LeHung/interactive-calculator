@@ -80,7 +80,14 @@ public class ByteCodeGenerator extends DFS {
           definition.setOpType(OPType.STORE);
           codeContainer.add(definition);
           break;
-
+        case AND:
+          AndDefinition andDefinition = new AndDefinition();
+          codeContainer.add(andDefinition);
+          break;
+        case OR:
+          OrDefinition orDefinition = new OrDefinition();
+          codeContainer.add(orDefinition);
+          break;
       }
     }
   }

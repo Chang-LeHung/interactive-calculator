@@ -17,13 +17,17 @@ public class ExpressionParser implements ExpressionParserConstants {
         ExpressionParser parser = new ExpressionParser( System.in ) ;
         DFS dfs = new DFS();
         ByteCodeGenerator generator = new ByteCodeGenerator();
-        Node node = parser.expression();
-        dfs.dumpAST(node);
-        System.out.println(dfs.getNodes().toString());
-        System.out.println(dfs.getEdges().toString());
-        generator.generateByteCode(node);
-        ByteCodeExecutor executor = new ByteCodeExecutor();
-        ICObject run = executor.run(generator.getCodeContainer());
+        while (true) {
+          Node node = parser.expression();
+          dfs.dumpAST(node);
+          System.out.println(dfs.getNodes().toString());
+          System.out.println(dfs.getEdges().toString());
+          generator.generateByteCode(node);
+          ByteCodeExecutor executor = new ByteCodeExecutor();
+          ICObject run = executor.run(generator.getCodeContainer());
+          System.out.println(run);
+          System.in.read();
+        }
     }
 
   final public Node expression() throws ParseException {Token t = null;
@@ -102,7 +106,9 @@ ret.setRightChild(node);
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
       case TIMES:
-      case DIV:{
+      case DIV:
+      case AND:
+      case OR:{
         ;
         break;
         }
@@ -130,6 +136,32 @@ ret = new Node();
               ret.setLeftChild(node);
               node.setParent(ret);
               ret.setNodeType(Node.Type.DIV);
+              ret.setValue(t.image);
+        node = primary();
+ret.setRightChild(node);
+              node.setParent(ret);
+              node = ret;
+        break;
+        }
+      case AND:{
+        t = jj_consume_token(AND);
+ret = new Node();
+              ret.setLeftChild(node);
+              node.setParent(ret);
+              ret.setNodeType(Node.Type.AND);
+              ret.setValue(t.image);
+        node = primary();
+ret.setRightChild(node);
+              node.setParent(ret);
+              node = ret;
+        break;
+        }
+      case OR:{
+        t = jj_consume_token(OR);
+ret = new Node();
+              ret.setLeftChild(node);
+              node.setParent(ret);
+              ret.setNodeType(Node.Type.OR);
               ret.setValue(t.image);
         node = primary();
 ret.setRightChild(node);
@@ -230,7 +262,7 @@ ret.setNodeType(Node.Type.IDENTIFIER);
 	   jj_la1_init_0();
 	}
 	private static void jj_la1_init_0() {
-	   jj_la1_0 = new int[] {0x20900,0x20900,0x600,0x600,0x40000,0x408000,};
+	   jj_la1_0 = new int[] {0x20900,0x20900,0x3600,0x3600,0x40000,0x408000,};
 	}
   final private JJCalls[] jj_2_rtns = new JJCalls[1];
   private boolean jj_rescan = false;

@@ -3,7 +3,7 @@ package bytecode;
 import java.util.function.Function;
 
 public class FunctionDefinition extends ByteCodeDefinition
-        implements Function<Double, Double> {
+        implements Function<Double, Object> {
 
   public enum FunctionType {
     TANH,
@@ -14,7 +14,7 @@ public class FunctionDefinition extends ByteCodeDefinition
     POW,
     EXP,
     LOG,
-    LOG10
+    LOG10, BIN
   }
 
   private FunctionType functionType;
@@ -42,7 +42,7 @@ public class FunctionDefinition extends ByteCodeDefinition
 
 
   @Override
-  public Double apply(Double o) {
+  public Object apply(Double o) {
     stringToType();
     return calculate(o);
   }
@@ -60,8 +60,10 @@ public class FunctionDefinition extends ByteCodeDefinition
       functionType = FunctionType.COT;
     }else if (name.equalsIgnoreCase("log")) {
       functionType = FunctionType.LOG;
-    }else {
+    }else if (name.equalsIgnoreCase("log10")){
       functionType = FunctionType.LOG10;
+    }else if (name.equalsIgnoreCase("bin")) {
+      functionType = FunctionType.BIN;
     }
   }
 
@@ -86,6 +88,5 @@ public class FunctionDefinition extends ByteCodeDefinition
     }
     return 0;
   }
-
 
 }

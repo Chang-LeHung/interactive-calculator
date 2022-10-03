@@ -9,7 +9,6 @@ import util.BuiltIn;
 import util.DFS;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 

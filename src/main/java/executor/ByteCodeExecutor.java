@@ -9,6 +9,7 @@ import java.util.Stack;
 
 import objects.ICDouble;
 import objects.ICInt;
+import objects.ICIntBinary;
 import objects.ICObject;
 
 public class ByteCodeExecutor {
@@ -55,6 +56,12 @@ public class ByteCodeExecutor {
           case FUNCTION:
             executeFunction(code);
             break;
+          case AND:
+            executeAnd(code);
+            break;
+          case OR:
+            executeOr(code);
+            break;
         }
       }
     }catch (Exception e) {
@@ -67,17 +74,48 @@ public class ByteCodeExecutor {
     return operandStack.pop();
   }
 
+  private void executeAnd(ByteCodeDefinition codeDefinition) {
+    ICObject o2 = operandStack.pop();
+    ICObject o1 = operandStack.pop();
+    if (o1 instanceof ICInt && o2 instanceof ICInt) {
+      int a = (int) ((ICInt) o1).getValue();
+      int b = (int) ((ICInt) o2).getValue();
+      ICInt icInt = new ICInt(a & b);
+      operandStack.push(icInt);
+      return;
+    }
+    throw new RuntimeException("can not take and on none integer data");
+  }
+
+  private void executeOr(ByteCodeDefinition codeDefinition) {
+    ICObject o2 = operandStack.pop();
+    ICObject o1 = operandStack.pop();
+    if (o1 instanceof ICInt && o2 instanceof ICInt) {
+      int a = (int) ((ICInt) o1).getValue();
+      int b = (int) ((ICInt) o2).getValue();
+      ICInt icInt = new ICInt(a | b);
+      operandStack.push(icInt);
+      return;
+    }
+    throw new RuntimeException("can not take and on none integer data");
+  }
+
   private void executeFunction(ByteCodeDefinition codeDefinition) {
     if (codeDefinition instanceof FunctionDefinition) {
       ICObject pop = operandStack.pop();
-      double t;
-      if (pop instanceof ICDouble) {
-        t = (double) ((ICDouble) pop).getValue();
+      if (((FunctionDefinition) codeDefinition).getName().equalsIgnoreCase("bin")) {
+        ICIntBinary icIntBinary = new ICIntBinary((Integer) ((ICInt) pop).getValue());
+        operandStack.push(icIntBinary);
       }else {
-        t = (Integer) ((ICInt) pop).getValue();
+        double t;
+        if (pop instanceof ICDouble) {
+          t = (double) ((ICDouble) pop).getValue();
+        }else {
+          t = (Integer) ((ICInt) pop).getValue();
+        }
+        Double ans = (Double) ((FunctionDefinition) codeDefinition).apply(t);
+        operandStack.push(new ICDouble(ans));
       }
-      Double ans = ((FunctionDefinition) codeDefinition).apply(t);
-      operandStack.push(new ICDouble(ans));
       return;
     }
     throw new RuntimeException("codeDefinition should be FunctionDefinition");

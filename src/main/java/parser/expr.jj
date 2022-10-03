@@ -177,6 +177,40 @@ Node term():
               node = ret;
             }
         )
+        |
+        (
+            t = <AND>
+            {
+              ret = new Node();
+              ret.setLeftChild(node);
+              node.setParent(ret);
+              ret.setNodeType(Node.Type.AND);
+              ret.setValue(t.image);
+            }
+            node = primary()
+            {
+              ret.setRightChild(node);
+              node.setParent(ret);
+              node = ret;
+            }
+        )
+        |
+        (
+            t = <OR>
+            {
+              ret = new Node();
+              ret.setLeftChild(node);
+              node.setParent(ret);
+              ret.setNodeType(Node.Type.OR);
+              ret.setValue(t.image);
+            }
+            node = primary()
+            {
+              ret.setRightChild(node);
+              node.setParent(ret);
+              node = ret;
+            }
+        )
     )*
     {
 //    System.out.println("In term : ret = " + node);

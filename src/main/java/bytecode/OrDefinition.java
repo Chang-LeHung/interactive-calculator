@@ -1,2 +1,8 @@
-package bytecode;public class OrDefinition {
+package bytecode;
+
+public class OrDefinition extends ByteCodeDefinition{
+
+  public OrDefinition() {
+    setOpType(OPType.OR);
+  }
 }
